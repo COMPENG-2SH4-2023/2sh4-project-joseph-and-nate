@@ -68,12 +68,6 @@ void GetInput(void) {
 }
 
 void RunLogic(void) {
-    // Collect input and set it in the gameMechs object
-    char input;
-    if (MacUILib_hasChar()) {
-        input = MacUILib_getChar();
-        gameMechs->setInput(input);
-    }
 
     // Check if there's a new input
     if (gameMechs->getInput() != 0) {
@@ -85,22 +79,27 @@ void RunLogic(void) {
     // Move the player in the current direction
     player->movePlayer();
 
-    // Additional logic if needed
+    if (player->getPlayerPos().isPosEqual(&gameMechs->getFoodPosition())) {
+        gameMechs->incrementScore();
+        gameMechs->generateRandomFoodPosition();
+    }
 }
 
 
 void DrawScreen(void) {
     MacUILib_clearScreen();
 
-    // Draw game border with player
+    // Draw game border with player and food
     for (int i = 0; i < SCREEN_WIDTH; ++i) {
         for (int j = 0; j < SCREEN_HEIGHT; ++j) {
-            // Check if the current position matches the player's position
             objPos& playerPos = player->getPlayerPos();  // Get the player's position by reference
+            objPos& foodPos = gameMechs->getFoodPosition();  // Get the food position by reference
             objPos& currentPosition = gameBorder[i][j];
 
             if (currentPosition.isPosEqual(&playerPos)) {
-                player->drawPlayer();  // Draw the player at its position
+                player->drawPlayer(); 
+            } else if (currentPosition.isPosEqual(&foodPos)) {
+                cout << 'o';
             } else {
                 cout << currentPosition.getSymbol();
             }

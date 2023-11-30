@@ -13,6 +13,7 @@ enum Direction {
     LEFT,
     RIGHT
 };
+class GameMechs;
 
 class Player {
 public:

@@ -2,6 +2,10 @@
 
 #include "GameMechs.h"
 #include "Player.h"
+#include <cstdlib>
+#include <ctime>
+
+objPos FoodPosition;
 
 GameMechs::GameMechs() {
     boardSizeX = 30;
@@ -9,6 +13,7 @@ GameMechs::GameMechs() {
     exitFlag = false;
     loseFlag = false;
     score = 0;
+    generateRandomFoodPosition();
 }
 
 GameMechs::GameMechs(int boardX, int boardY) {
@@ -17,6 +22,7 @@ GameMechs::GameMechs(int boardX, int boardY) {
     exitFlag = false;
     loseFlag = false;
     score = 0;
+    generateRandomFoodPosition();
 }
 
 GameMechs::~GameMechs() {
@@ -48,6 +54,8 @@ char GameMechs::getInput() {
         return static_cast<char>(Direction::LEFT);
     } else if (input == 'D' || input == 'd') {
         return static_cast<char>(Direction::RIGHT);
+    } else if (input == 'q' || input == 'Q') {
+        setExitTrue();  
     } else {
         return input;
     }
@@ -76,4 +84,15 @@ int GameMechs::getScore() {
 
 void GameMechs::incrementScore() {
     score++;
+}
+
+void GameMechs::generateRandomFoodPosition() {
+    srand(time(nullptr)); // Seed for random number generation
+    do {
+        FoodPosition.setObjPos(rand() % boardSizeY, rand() % boardSizeX, 'o');
+    } while (FoodPosition.isPosEqual(&player->getPlayerPos()));
+}
+
+objPos& GameMechs::getFoodPosition() {
+    return FoodPosition;
 }
