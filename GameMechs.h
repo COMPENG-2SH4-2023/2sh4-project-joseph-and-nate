@@ -1,45 +1,39 @@
+// GameMechs.h
+
 #ifndef GAMEMECHS_H
 #define GAMEMECHS_H
 
-#include <cstdlib>
-#include <time.h>
-
 #include "objPos.h"
-#include "objPosArrayList.h"
 
-using namespace std;
+class GameMechs {
+private:
+    char input;
+    bool exitFlag;
+    bool loseFlag;
+    int score;
+    int boardSizeX;
+    int boardSizeY;
 
+public:
+    GameMechs();
+    GameMechs(int boardX, int boardY);
+    ~GameMechs();
 
-class GameMechs
-{
-    // Construct the remaining declaration from the project manual.
+    bool getExitFlagStatus();
+    void setExitTrue();
 
-    // Only some sample members are included here
+    bool getLoseFlagStatus();
+    void setLoseFlag();
 
-    // You will include more data members and member functions to complete your design.
+    char getInput();
+    void setInput(char thisInput);
+    void clearInput();
 
-    private:
-        char input;
-        bool exitFlag;
-        
-        int boardSizeX;
-        int boardSizeY;
+    int getBoardSizeX();
+    int getBoardSizeY();
 
-    public:
-        GameMechs();
-        GameMechs(int boardX, int boardY);
-        
-        bool getExitFlagStatus();
-        void setExitTrue();
-
-        char getInput();
-        void setInput(char this_input);
-        void clearInput();
-
-        int getBoardSizeX();
-        int getBoardSizeY();
-      
-
+    int getScore();
+    void incrementScore();
 };
 
 #endif

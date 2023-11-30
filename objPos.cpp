@@ -58,3 +58,19 @@ char objPos::getSymbolIfPosEqual(const objPos* refPos)
     else
         return 0;
 }
+
+void objPos::moveUp() {
+    x--;
+}
+
+void objPos::moveDown() {
+    x++;
+}
+
+void objPos::moveLeft() {
+    y--;
+}
+
+void objPos::moveRight() {
+    y++;
+}
