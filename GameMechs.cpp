@@ -88,9 +88,24 @@ void GameMechs::incrementScore() {
 
 void GameMechs::generateRandomFoodPosition() {
     srand(time(nullptr)); // Seed for random number generation
+    objPos playerPosition;
+    // Gets the player's position
+    if (score == 0) {
+    playerPosition.setObjPos(10, 5, '*'); //checks initial position
+    } else{
+    objPos playerPosition = player->getPlayerPos();
+    }
+    // this generates a new food position until it's different from the player's position if the player has moved
     do {
-        FoodPosition.setObjPos(rand() % boardSizeY, rand() % boardSizeX, 'o');
-    } while (FoodPosition.isPosEqual(&player->getPlayerPos()));
+        // this generates random coordinates inside the board boundaries
+        int foodX = rand() % boardSizeX;
+        int foodY = rand() % boardSizeY;
+
+        // this sets the food position
+        FoodPosition.setObjPos(10, foodY, 'o');
+
+        // this checks if the food position is the same as the player's position
+    } while (FoodPosition.isPosEqual(&playerPosition));
 }
 
 objPos& GameMechs::getFoodPosition() {
