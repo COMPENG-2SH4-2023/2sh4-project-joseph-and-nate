@@ -1,5 +1,3 @@
-// Player.cpp
-
 #include "Player.h"
 #include "GameMechs.h"
 #include <stdio.h>
@@ -55,6 +53,14 @@ void Player::movePlayer() {
     } else if (playerPos.y == gameMecRef->getBoardSizeX() - 1) {
         playerPos.y = 1;
     }
+
+    bodyPositions.insertHead(playerPos);
+    
+    // Remove the tail if the body size exceeds the score
+    while (bodyPositions.getSize() > gameMecRef->getScore()+1) {
+        bodyPositions.removeTail();
+    }
+
 }
 
 
@@ -65,4 +71,37 @@ void Player::drawPlayer() {
 
 objPos& Player::getPlayerPos() {
     return playerPos;
+}
+
+void Player::growPlayer() {
+    // Add a new position at the head when the player grows
+    bodyPositions.insertHead(playerPos);
+}
+
+char Player::getPlayerSymbolAtPosition(int x, int y) {
+    // Check if the given position is part of the player's body
+    objPos checkPos(x, y, ' ');
+    for (int i = 0; i < bodyPositions.getSize(); ++i) {
+        objPos currentPos;
+        bodyPositions.getElement(currentPos, i);
+        if (checkPos.isPosEqual(&currentPos)) {
+            return '*';
+        }
+    }
+    return 0;
+}
+
+bool Player::checkSelfCollision() {
+    objPos headPos = playerPos;
+    
+    // Check if the head position matches any position in the body
+    for (int i = 1; i < bodyPositions.getSize(); ++i) {
+        objPos currentPos;
+        bodyPositions.getElement(currentPos, i);
+        if (headPos.isPosEqual(&currentPos)) {
+            return true;  // Collision detected
+        }
+    }
+    
+    return false;  // No collision
 }

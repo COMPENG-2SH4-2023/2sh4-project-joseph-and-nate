@@ -1,5 +1,3 @@
-// GameMechs.cpp
-
 #include "GameMechs.h"
 #include "Player.h"
 #include <cstdlib>

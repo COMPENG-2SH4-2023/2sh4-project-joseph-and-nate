@@ -1,5 +1,3 @@
-//project.cpp
-
 #include <iostream>
 #include "MacUILib.h"
 #include "objPos.h"
@@ -32,7 +30,7 @@ int main(void) {
     player = new Player(gameMechs);  // Initialize player
     Initialize();
 
-    while (!gameMechs->getExitFlagStatus()) {
+    while (!gameMechs->getExitFlagStatus() && !gameMechs->getLoseFlagStatus()) {
         GetInput();
         RunLogic();
         DrawScreen();
@@ -79,10 +77,17 @@ void RunLogic(void) {
     // Move the player in the current direction
     player->movePlayer();
 
+    if (player->checkSelfCollision()) {
+        gameMechs->setLoseFlag();
+        return;
+    }
+
     if (player->getPlayerPos().isPosEqual(&gameMechs->getFoodPosition())) {
+        player->growPlayer();
         gameMechs->incrementScore();
         gameMechs->generateRandomFoodPosition();
     }
+
 }
 
 
@@ -92,22 +97,27 @@ void DrawScreen(void) {
     // Draw game border with player and food
     for (int i = 0; i < SCREEN_WIDTH; ++i) {
         for (int j = 0; j < SCREEN_HEIGHT; ++j) {
-            objPos& playerPos = player->getPlayerPos();  // Get the player's position by reference
             objPos& foodPos = gameMechs->getFoodPosition();  // Get the food position by reference
-            objPos& currentPosition = gameBorder[i][j];
+            objPos currentPosition(i, j, ' ');
 
-            if (currentPosition.isPosEqual(&playerPos)) {
-                player->drawPlayer(); 
-            } else if (currentPosition.isPosEqual(&foodPos)) {
-                 MacUILib_printf("%c", 'o');
+            if (currentPosition.isPosEqual(&foodPos)) {
+                MacUILib_printf("%c", 'o');
             } else {
-                MacUILib_printf("%c", currentPosition.getSymbol());
+                char playerSymbol = player->getPlayerSymbolAtPosition(i, j);
+                if (playerSymbol != 0) {
+                    MacUILib_printf("%c", playerSymbol);
+                } else if (i == 0 || i == SCREEN_WIDTH - 1 || j == 0 || j == SCREEN_HEIGHT - 1) {
+                    MacUILib_printf("%c", '#');
+                } else {
+                    MacUILib_printf("%c", ' ');  // Empty space within the border
+                }
             }
         }
-         MacUILib_printf("\n");
+        MacUILib_printf("\n");
     }
     MacUILib_printf("Score: %d", gameMechs->getScore());
 }
+
 
 
 void LoopDelay(void) {
@@ -116,6 +126,8 @@ void LoopDelay(void) {
 
 void CleanUp(void) {
     MacUILib_clearScreen();
+
+    MacUILib_printf("Game over.\nYou Scored: %d", gameMechs->getScore());
     MacUILib_uninit();
     delete player;
     delete gameMechs;

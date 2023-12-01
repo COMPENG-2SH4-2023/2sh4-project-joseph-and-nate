@@ -1,5 +1,3 @@
-// GameMechs.h
-
 #ifndef GAMEMECHS_H
 #define GAMEMECHS_H
 

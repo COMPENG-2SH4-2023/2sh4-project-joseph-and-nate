@@ -1,10 +1,9 @@
-// Player.h
-
 #ifndef PLAYER_H
 #define PLAYER_H
 
 #include "GameMechs.h"
 #include "objPos.h"
+#include "objPosArrayList.h"
 
 enum Direction {
     STOP = 0,
@@ -21,12 +20,16 @@ public:
     void updatePlayerDir();
     void movePlayer();
     void drawPlayer();
-    objPos& getPlayerPos(); 
+    objPos& getPlayerPos();
+    void growPlayer();
+    char getPlayerSymbolAtPosition(int x, int y); 
+    bool checkSelfCollision();
 
 private:
     Direction playerDir;
     GameMechs* gameMecRef;
     objPos playerPos;
+    objPosArrayList bodyPositions;
 };
 
-#endif // PLAYER_H
+#endif
