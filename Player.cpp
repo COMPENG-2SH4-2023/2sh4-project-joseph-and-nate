@@ -44,16 +44,16 @@ void Player::movePlayer() {
     }
 
     // Wrap around if hitting the game board
-    if (playerPos.x < 0) {
-        playerPos.x = gameMecRef->getBoardSizeY() - 1;
-    } else if (playerPos.x >= gameMecRef->getBoardSizeY()) {
-        playerPos.x = 0;
+    if (playerPos.x == 0) {
+        playerPos.x = (gameMecRef->getBoardSizeY() - 2);
+    } else if (playerPos.x == gameMecRef->getBoardSizeY()-1) {
+        playerPos.x = 1;
     }
 
-    if (playerPos.y < 0) {
-        playerPos.y = gameMecRef->getBoardSizeX() - 1;
-    } else if (playerPos.y >= gameMecRef->getBoardSizeX()) {
-        playerPos.y = 0;
+    if (playerPos.y == 0) {
+        playerPos.y = (gameMecRef->getBoardSizeX() - 2);
+    } else if (playerPos.y == gameMecRef->getBoardSizeX() - 1) {
+        playerPos.y = 1;
     }
 }
 

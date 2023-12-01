@@ -9,7 +9,7 @@ objPos FoodPosition;
 
 GameMechs::GameMechs() {
     boardSizeX = 30;
-    boardSizeY = 15;
+    boardSizeY = 16;
     exitFlag = false;
     loseFlag = false;
     score = 0;
@@ -98,11 +98,11 @@ void GameMechs::generateRandomFoodPosition() {
     // this generates a new food position until it's different from the player's position if the player has moved
     do {
         // this generates random coordinates inside the board boundaries
-        int foodX = rand() % boardSizeX;
-        int foodY = rand() % boardSizeY;
+        int foodX = 1 + rand() % (boardSizeY - 2);
+        int foodY = 1 + rand() % (boardSizeX - 2);
 
         // this sets the food position
-        FoodPosition.setObjPos(10, foodY, 'o');
+        FoodPosition.setObjPos(foodX, foodY, 'o');
 
         // this checks if the food position is the same as the player's position
     } while (FoodPosition.isPosEqual(&playerPosition));

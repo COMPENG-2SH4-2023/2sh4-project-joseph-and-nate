@@ -99,15 +99,15 @@ void DrawScreen(void) {
             if (currentPosition.isPosEqual(&playerPos)) {
                 player->drawPlayer(); 
             } else if (currentPosition.isPosEqual(&foodPos)) {
-                cout << 'o';
+                 MacUILib_printf("%c", 'o');
             } else {
-                cout << currentPosition.getSymbol();
+                MacUILib_printf("%c", currentPosition.getSymbol());
             }
         }
-        cout << endl;
+         MacUILib_printf("\n");
     }
+    MacUILib_printf("Score: %d", gameMechs->getScore());
 }
-
 
 
 void LoopDelay(void) {
